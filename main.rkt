@@ -10,7 +10,7 @@
   (lambda (f? lox)
     (foldr (lambda (x rror) (or (f? x) rror)) (or) lox)))
 
-;; remove-duplicates: (listof X) -> (listof X)
+;; my-remove-duplicates: (listof X) -> (listof X)
 (define my-remove-duplicates
   (lambda (lox)
     (foldr (lambda (x rror) (cons x (filter (lambda (y) (not (eq? x y)) rror)))) '() lox)))
