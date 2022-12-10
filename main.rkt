@@ -1,22 +1,38 @@
 #lang racket
 
-;; andmap/: (X -> Bool) (listof X) -> Bool
-(define andmap/
+;; my-andmap: (X -> Bool) (listof X) -> Bool
+(define my-andmap
   (lambda (f? lox)
     (foldr (lambda (x rror) (and (f? x) rror)) (and) lox)))
 
-;; ormap/: (X -> Bool) (listof X) -> Bool
-(define ormap/
+;; my-ormap: (X -> Bool) (listof X) -> Bool
+(define my-ormap
   (lambda (f? lox)
     (foldr (lambda (x rror) (or (f? x) rror)) (or) lox)))
 
-;; remove-duplicates/: (listof X) -> (listof X)
-(define remove-duplicates/
+;; remove-duplicates: (listof X) -> (listof X)
+(define my-remove-duplicates
   (lambda (lox)
     (foldr (lambda (x rror) (cons x (filter (lambda (y) (not (eq? x y)) rror)))) '() lox)))
 
-;; zip/: (listof X) (listof Y) -> (listof (list X Y))
-(define zip/
-  (lambda (lox loy)
-    (map list lox loy)))
+;; a ZO is either:
+;; * '()
+;; * (cons ZO '())
 
+;; nat->zo: Nat -> ZO
+(define nat->zo
+  (lambda (n)
+    (cond [(zero? n) '()]
+	  [else (cons (nat->zo (sub1 n)) '())])))
+
+;; a VNO is either:
+;; * '()
+;; * (append v (list v))
+;; Requires: v is a VNO.
+
+;; nat->vno: Nat -> VNO
+(define nat->vno
+  (lambda (n)
+    (cond [(zero? n) '()]
+          [else (local [(define rror (nat->vno (sub1 n)))]
+                  (append rror (list rror)))])))
